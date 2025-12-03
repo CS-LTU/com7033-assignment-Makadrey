@@ -27,9 +27,15 @@ wheels/
 instance/
 .webassets-cache
 
-# Environment variables
+# Environment
 .env
-.env.local
+.venv
+.flaskenv
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # IDE
 .vscode/
@@ -38,16 +44,29 @@ instance/
 *.swo
 *~
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Logs
-*.log
-logs/
-
 # OS
 .DS_Store
 Thumbs.db
 
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs
+logs/
+*.log
+security.log
+
+# Local data (keep in data/ folder)
+# data/*.csv  # Uncomment if you don't want to track CSV
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# ML Models (keep in ml_models/ folder for version control)
+# ml_models/*.pkl  # Uncomment if you don't want to track models
+
+# Temporary files
+tmp/
+temp/
