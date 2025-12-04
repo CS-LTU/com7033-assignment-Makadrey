@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Stroke Prediction System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-chart-bar me-2"></i>Patient Analytics</h2>
+            <p class="text-muted">Data visualization and insights</p>
+        </div>
+    </div>
+    
+    {% if mongo_available and data %}
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">Gender Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">Stroke by Age Group</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">Smoking Status & Stroke</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="smokingChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">Health Conditions Summary</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="healthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Analytics data is not available. Please ensure the database is connected.
+    </div>
+    {% endif %}
+</div>
+
+{% if mongo_available and data %}
+<script>
+    // Gender Distribution Chart
+    const genderCtx = document.getElementById('genderChart').getContext('2d');
+    new Chart(genderCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ data.gender_dist | map(attribute='_id') | list | tojson }},
+            datasets: [{
+                data: {{ data.gender_dist | map(attribute='count') | list | tojson }},
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+            }]
+        }
+    });
+    
+    // Age Group Chart
+    const ageCtx = document.getElementById('ageChart').getContext('2d');
+    const ageLabels = ['0-20', '20-40', '40-60', '60-80', '80+'];
+    new Chart(ageCtx, {
+        type: 'bar',
+        data: {
+            labels: ageLabels,
+            datasets: [{
+                label: 'Total Patients',
+                data: {{ data.age_groups | map(attribute='count') | list | tojson }},
+                backgroundColor: '#36A2EB'
+            }, {
+                label: 'Stroke Cases',
+                data: {{ data.age_groups | map(attribute='stroke_count') | list | tojson }},
+                backgroundColor: '#FF6384'
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+    
+    // Smoking Chart
+    const smokingCtx = document.getElementById('smokingChart').getContext('2d');
+    new Chart(smokingCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ data.smoking_stroke | map(attribute='_id') | list | tojson }},
+            datasets: [{
+                label: 'Total',
+                data: {{ data.smoking_stroke | map(attribute='count') | list | tojson }},
+                backgroundColor: '#36A2EB'
+            }, {
+                label: 'Stroke Cases',
+                data: {{ data.smoking_stroke | map(attribute='stroke_count') | list | tojson }},
+                backgroundColor: '#FF6384'
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+    
+    // Health Conditions Chart
+    const healthCtx = document.getElementById('healthChart').getContext('2d');
+    new Chart(healthCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['No Conditions', 'Hypertension Only', 'Heart Disease Only', 'Both'],
+            datasets: [{
+                data: {{ data.health_correlation | map(attribute='count') | list | tojson }},
+                backgroundColor: ['#4BC0C0', '#FFCE56', '#FF9F40', '#FF6384']
+            }]
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}
+
