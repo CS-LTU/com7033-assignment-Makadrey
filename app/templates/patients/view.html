@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Details - Stroke Prediction System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2><i class="fas fa-user-circle me-2"></i>Patient #{{ patient.id }}</h2>
+                    <p class="text-muted">Detailed patient information</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('patients.edit_patient', patient_id=patient.id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </a>
+                    <a href="{{ url_for('patients.list_patients') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Personal Information -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="40%">Patient ID:</th>
+                            <td><strong>#{{ patient.id }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Gender:</th>
+                            <td>
+                                <i class="fas fa-{{ 'mars' if patient.gender == 'Male' else 'venus' }} me-2 text-primary"></i>
+                                {{ patient.gender }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Age:</th>
+                            <td>{{ patient.age|int }} years</td>
+                        </tr>
+                        <tr>
+                            <th>Ever Married:</th>
+                            <td>
+                                {% if patient.ever_married == 'Yes' %}
+                                <span class="badge bg-info">Yes</span>
+                                {% else %}
+                                <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Work Type:</th>
+                            <td>{{ patient.work_type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Residence:</th>
+                            <td>
+                                <i class="fas fa-{{ 'city' if patient.Residence_type == 'Urban' else 'tree' }} me-2"></i>
+                                {{ patient.Residence_type }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Smoking Status:</th>
+                            <td>
+                                <span class="badge bg-{% if patient.smoking_status == 'smokes' %}danger{% elif patient.smoking_status == 'formerly smoked' %}warning{% elif patient.smoking_status == 'never smoked' %}success{% else %}secondary{% endif %}">
+                                    {{ patient.smoking_status }}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medical Information -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-notes-medical me-2"></i>Medical Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="40%">BMI:</th>
+                            <td>
+                                {% if patient.bmi != 'N/A' %}
+                                    {{ patient.bmi }} kg/m²
+                                {% else %}
+                                    <span class="text-muted">Not Available</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Glucose Level:</th>
+                            <td>{{ patient.avg_glucose_level }} mg/dL</td>
+                        </tr>
+                        <tr>
+                            <th>Hypertension:</th>
+                            <td>
+                                {% if patient.hypertension == 1 %}
+                                <span class="badge bg-warning">Yes</span>
+                                {% else %}
+                                <span class="badge bg-success">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Heart Disease:</th>
+                            <td>
+                                {% if patient.heart_disease == 1 %}
+                                <span class="badge bg-warning">Yes</span>
+                                {% else %}
+                                <span class="badge bg-success">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Stroke:</th>
+                            <td>
+                                {% if patient.stroke == 1 %}
+                                <span class="badge bg-danger fs-6">Yes</span>
+                                {% else %}
+                                <span class="badge bg-success fs-6">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

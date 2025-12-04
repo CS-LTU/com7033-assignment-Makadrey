@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Add Patient - Stroke Prediction System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-user-plus me-2"></i>Add New Patient</h2>
+            <p class="text-muted">Enter patient information for stroke prediction analysis</p>
+        </div>
+    </div>
+    
+    <div class="card shadow">
+        <div class="card-body p-4">
+            <form method="POST" action="{{ url_for('patients.add_patient') }}" id="patientForm">
+                <div class="row">
+                    <!-- Patient ID -->
+                    <div class="col-md-6 mb-3">
+                        <label for="patient_id" class="form-label">
+                            <i class="fas fa-id-card me-2"></i>Patient ID *
+                        </label>
+                        <input type="number" class="form-control" id="patient_id" name="patient_id" 
+                               required min="1" placeholder="Enter unique patient ID">
+                    </div>
+                    
+                    <!-- Gender -->
+                    <div class="col-md-6 mb-3">
+                        <label for="gender" class="form-label">
+                            <i class="fas fa-venus-mars me-2"></i>Gender *
+                        </label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Age -->
+                    <div class="col-md-6 mb-3">
+                        <label for="age" class="form-label">
+                            <i class="fas fa-birthday-cake me-2"></i>Age *
+                        </label>
+                        <input type="number" class="form-control" id="age" name="age" 
+                               required min="0" max="120" step="0.1" placeholder="Enter age">
+                    </div>
+                    
+                    <!-- BMI -->
+                    <div class="col-md-6 mb-3">
+                        <label for="bmi" class="form-label">
+                            <i class="fas fa-weight me-2"></i>BMI
+                        </label>
+                        <input type="number" class="form-control" id="bmi" name="bmi" 
+                               min="10" max="100" step="0.1" placeholder="Body Mass Index">
+                        <small class="form-text text-muted">Leave empty if not available</small>
+                    </div>
+                    
+                    <!-- Average Glucose Level -->
+                    <div class="col-md-6 mb-3">
+                        <label for="avg_glucose_level" class="form-label">
+                            <i class="fas fa-tint me-2"></i>Average Glucose Level *
+                        </label>
+                        <input type="number" class="form-control" id="avg_glucose_level" 
+                               name="avg_glucose_level" required min="0" max="500" step="0.01" 
+                               placeholder="mg/dL">
+                    </div>
+                    
+                    <!-- Hypertension -->
+                    <div class="col-md-6 mb-3">
+                        <label for="hypertension" class="form-label">
+                            <i class="fas fa-heartbeat me-2"></i>Hypertension *
+                        </label>
+                        <select class="form-select" id="hypertension" name="hypertension" required>
+                            <option value="">Select</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Heart Disease -->
+                    <div class="col-md-6 mb-3">
+                        <label for="heart_disease" class="form-label">
+                            <i class="fas fa-heart me-2"></i>Heart Disease *
+                        </label>
+                        <select class="form-select" id="heart_disease" name="heart_disease" required>
+                            <option value="">Select</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Ever Married -->
+                    <div class="col-md-6 mb-3">
+                        <label for="ever_married" class="form-label">
+                            <i class="fas fa-ring me-2"></i>Ever Married *
+                        </label>
+                        <select class="form-select" id="ever_married" name="ever_married" required>
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Work Type -->
+                    <div class="col-md-6 mb-3">
+                        <label for="work_type" class="form-label">
+                            <i class="fas fa-briefcase me-2"></i>Work Type *
+                        </label>
+                        <select class="form-select" id="work_type" name="work_type" required>
+                            <option value="">Select Work Type</option>
+                            <option value="Private">Private</option>
+                            <option value="Self-employed">Self-employed</option>
+                            <option value="Govt_job">Government Job</option>
+                            <option value="children">Children</option>
+                            <option value="Never_worked">Never Worked</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Residence Type -->
+                    <div class="col-md-6 mb-3">
+                        <label for="Residence_type" class="form-label">
+                            <i class="fas fa-home me-2"></i>Residence Type *
+                        </label>
+                        <select class="form-select" id="Residence_type" name="Residence_type" required>
+                            <option value="">Select Residence Type</option>
+                            <option value="Urban">Urban</option>
+                            <option value="Rural">Rural</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Smoking Status -->
+                    <div class="col-md-6 mb-3">
+                        <label for="smoking_status" class="form-label">
+                            <i class="fas fa-smoking me-2"></i>Smoking Status *
+                        </label>
+                        <select class="form-select" id="smoking_status" name="smoking_status" required>
+                            <option value="">Select Smoking Status</option>
+                            <option value="never smoked">Never Smoked</option>
+                            <option value="formerly smoked">Formerly Smoked</option>
+                            <option value="smokes">Smokes</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Stroke -->
+                    <div class="col-md-6 mb-3">
+                        <label for="stroke" class="form-label">
+                            <i class="fas fa-brain me-2"></i>Stroke *
+                        </label>
+                        <select class="form-select" id="stroke" name="stroke" required>
+                            <option value="">Select</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('patients.list_patients') }}" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-2"></i>Save Patient
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Form validation
+    document.getElementById('patientForm').addEventListener('submit', function(e) {
+        const age = parseFloat(document.getElementById('age').value);
+        const glucose = parseFloat(document.getElementById('avg_glucose_level').value);
+        
+        if (age < 0 || age > 120) {
+            e.preventDefault();
+            alert('Age must be between 0 and 120');
+            return;
+        }
+        
+        if (glucose < 0 || glucose > 500) {
+            e.preventDefault();
+            alert('Glucose level must be between 0 and 500');
+            return;
+        }
+        
+        const bmi = document.getElementById('bmi').value;
+        if (bmi && (parseFloat(bmi) < 10 || parseFloat(bmi) > 100)) {
+            e.preventDefault();
+            alert('BMI must be between 10 and 100');
+            return;
+        }
+    });
+</script>
+{% endblock %}
+

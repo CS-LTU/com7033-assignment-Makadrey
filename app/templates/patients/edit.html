@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Patient - Stroke Prediction System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-edit me-2"></i>Edit Patient #{{ patient.id }}</h2>
+            <p class="text-muted">Update patient information</p>
+        </div>
+    </div>
+    
+    <div class="card shadow">
+        <div class="card-body p-4">
+            <form method="POST" action="{{ url_for('patients.edit_patient', patient_id=patient.id) }}" id="editPatientForm">
+                <div class="row">
+                    <!-- Gender -->
+                    <div class="col-md-6 mb-3">
+                        <label for="gender" class="form-label">
+                            <i class="fas fa-venus-mars me-2"></i>Gender *
+                        </label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Age -->
+                    <div class="col-md-6 mb-3">
+                        <label for="age" class="form-label">
+                            <i class="fas fa-birthday-cake me-2"></i>Age *
+                        </label>
+                        <input type="number" class="form-control" id="age" name="age" 
+                               required min="0" max="120" step="0.1" value="{{ patient.age }}">
+                    </div>
+                    
+                    <!-- BMI -->
+                    <div class="col-md-6 mb-3">
+                        <label for="bmi" class="form-label">
+                            <i class="fas fa-weight me-2"></i>BMI
+                        </label>
+                        <input type="number" class="form-control" id="bmi" name="bmi" 
+                               min="10" max="100" step="0.1" 
+                               value="{{ patient.bmi if patient.bmi != 'N/A' else '' }}">
+                    </div>
+                    
+                    <!-- Average Glucose Level -->
+                    <div class="col-md-6 mb-3">
+                        <label for="avg_glucose_level" class="form-label">
+                            <i class="fas fa-tint me-2"></i>Average Glucose Level *
+                        </label>
+                        <input type="number" class="form-control" id="avg_glucose_level" 
+                               name="avg_glucose_level" required min="0" max="500" step="0.01" 
+                               value="{{ patient.avg_glucose_level }}">
+                    </div>
+                    
+                    <!-- Hypertension -->
+                    <div class="col-md-6 mb-3">
+                        <label for="hypertension" class="form-label">
+                            <i class="fas fa-heartbeat me-2"></i>Hypertension *
+                        </label>
+                        <select class="form-select" id="hypertension" name="hypertension" required>
+                            <option value="0" {% if patient.hypertension == 0 %}selected{% endif %}>No</option>
+                            <option value="1" {% if patient.hypertension == 1 %}selected{% endif %}>Yes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Heart Disease -->
+                    <div class="col-md-6 mb-3">
+                        <label for="heart_disease" class="form-label">
+                            <i class="fas fa-heart me-2"></i>Heart Disease *
+                        </label>
+                        <select class="form-select" id="heart_disease" name="heart_disease" required>
+                            <option value="0" {% if patient.heart_disease == 0 %}selected{% endif %}>No</option>
+                            <option value="1" {% if patient.heart_disease == 1 %}selected{% endif %}>Yes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Ever Married -->
+                    <div class="col-md-6 mb-3">
+                        <label for="ever_married" class="form-label">
+                            <i class="fas fa-ring me-2"></i>Ever Married *
+                        </label>
+                        <select class="form-select" id="ever_married" name="ever_married" required>
+                            <option value="Yes" {% if patient.ever_married == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if patient.ever_married == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Work Type -->
+                    <div class="col-md-6 mb-3">
+                        <label for="work_type" class="form-label">
+                            <i class="fas fa-briefcase me-2"></i>Work Type *
+                        </label>
+                        <select class="form-select" id="work_type" name="work_type" required>
+                            <option value="Private" {% if patient.work_type == 'Private' %}selected{% endif %}>Private</option>
+                            <option value="Self-employed" {% if patient.work_type == 'Self-employed' %}selected{% endif %}>Self-employed</option>
+                            <option value="Govt_job" {% if patient.work_type == 'Govt_job' %}selected{% endif %}>Government Job</option>
+                            <option value="children" {% if patient.work_type == 'children' %}selected{% endif %}>Children</option>
+                            <option value="Never_worked" {% if patient.work_type == 'Never_worked' %}selected{% endif %}>Never Worked</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Residence Type -->
+                    <div class="col-md-6 mb-3">
+                        <label for="Residence_type" class="form-label">
+                            <i class="fas fa-home me-2"></i>Residence Type *
+                        </label>
+                        <select class="form-select" id="Residence_type" name="Residence_type" required>
+                            <option value="Urban" {% if patient.Residence_type == 'Urban' %}selected{% endif %}>Urban</option>
+                            <option value="Rural" {% if patient.Residence_type == 'Rural' %}selected{% endif %}>Rural</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Smoking Status -->
+                    <div class="col-md-6 mb-3">
+                        <label for="smoking_status" class="form-label">
+                            <i class="fas fa-smoking me-2"></i>Smoking Status *
+                        </label>
+                        <select class="form-select" id="smoking_status" name="smoking_status" required>
+                            <option value="never smoked" {% if patient.smoking_status == 'never smoked' %}selected{% endif %}>Never Smoked</option>
+                            <option value="formerly smoked" {% if patient.smoking_status == 'formerly smoked' %}selected{% endif %}>Formerly Smoked</option>
+                            <option value="smokes" {% if patient.smoking_status == 'smokes' %}selected{% endif %}>Smokes</option>
+                            <option value="Unknown" {% if patient.smoking_status == 'Unknown' %}selected{% endif %}>Unknown</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Stroke -->
+                    <div class="col-md-6 mb-3">
+                        <label for="stroke" class="form-label">
+                            <i class="fas fa-brain me-2"></i>Stroke *
+                        </label>
+                        <select class="form-select" id="stroke" name="stroke" required>
+                            <option value="0" {% if patient.stroke == 0 %}selected{% endif %}>No</option>
+                            <option value="1" {% if patient.stroke == 1 %}selected{% endif %}>Yes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('patients.list_patients') }}" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Update Patient
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
